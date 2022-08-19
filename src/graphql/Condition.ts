@@ -1,5 +1,4 @@
 import { objectType, extendType, nonNull, floatArg, list } from 'nexus';
-import { NexusGenObjects } from "../../nexus-typegen";
 
 export const Condition = objectType({
   name: "Condition",
@@ -9,12 +8,6 @@ export const Condition = objectType({
     t.nonNull.dateTime("updatedAt");
   }
 });
-
-let condition: NexusGenObjects["Condition"] = {
-  coord: [50, 50],
-  aqi: 1,
-  updatedAt: new Date()
-}
 
 export const ConditionQuery = extendType({
   type: "Query",

@@ -13,6 +13,23 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+type Mutation {
+  signup(coord: [Float!]!, email: String, name: String!, phone: Int): SignUp!
+}
+
 type Query {
   condition(coord: [Float!]!): Condition!
+}
+
+type SignUp {
+  condition: Condition!
+  user: User!
+}
+
+type User {
+  coord: [Float!]!
+  email: String
+  id: Int!
+  name: String!
+  phone: Int
 }

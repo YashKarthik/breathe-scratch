@@ -4,6 +4,7 @@
  */
 
 
+import type { Context } from "./src/context"
 import type { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -48,7 +49,19 @@ export interface NexusGenObjects {
     coord: number[]; // [Float!]!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  Mutation: {};
   Query: {};
+  SignUp: { // root type
+    condition: NexusGenRootTypes['Condition']; // Condition!
+    user: NexusGenRootTypes['User']; // User!
+  }
+  User: { // root type
+    coord: number[]; // [Float!]!
+    email?: string | null; // String
+    id: number; // Int!
+    name: string; // String!
+    phone?: number | null; // Int
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -67,8 +80,22 @@ export interface NexusGenFieldTypes {
     coord: number[]; // [Float!]!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  Mutation: { // field return type
+    signup: NexusGenRootTypes['SignUp']; // SignUp!
+  }
   Query: { // field return type
     condition: NexusGenRootTypes['Condition']; // Condition!
+  }
+  SignUp: { // field return type
+    condition: NexusGenRootTypes['Condition']; // Condition!
+    user: NexusGenRootTypes['User']; // User!
+  }
+  User: { // field return type
+    coord: number[]; // [Float!]!
+    email: string | null; // String
+    id: number; // Int!
+    name: string; // String!
+    phone: number | null; // Int
   }
 }
 
@@ -78,12 +105,34 @@ export interface NexusGenFieldTypeNames {
     coord: 'Float'
     updatedAt: 'DateTime'
   }
+  Mutation: { // field return type name
+    signup: 'SignUp'
+  }
   Query: { // field return type name
     condition: 'Condition'
+  }
+  SignUp: { // field return type name
+    condition: 'Condition'
+    user: 'User'
+  }
+  User: { // field return type name
+    coord: 'Float'
+    email: 'String'
+    id: 'Int'
+    name: 'String'
+    phone: 'Int'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    signup: { // args
+      coord: number[]; // [Float!]!
+      email?: string | null; // String
+      name: string; // String!
+      phone?: number | null; // Int
+    }
+  }
   Query: {
     condition: { // args
       coord: number[]; // [Float!]!
@@ -122,7 +171,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

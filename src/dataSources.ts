@@ -11,7 +11,7 @@ export class PollutionAPI extends RESTDataSource {
   }
 
   async getPollution(coord: number[]) {
-    const data = await this.get(`air_pollution?lat=${encodeURIComponent(coord[0])}&lon=${encodeURIComponent(coord[1])}&appid=${encodeURIComponent(process.env.API_KEY)}`)
+    const data = await this.get(`air_pollution?lat=${encodeURIComponent(coord[0])}&lon=${encodeURIComponent(coord[1])}&appid=${encodeURIComponent(process.env.API_KEY!)}`)
         .then(e => {return e});
 
     const condition: NexusGenObjects['Condition'] = {
