@@ -12,4 +12,8 @@ An alert system to warn you when the pollution level in your city (or region) re
 - [x] Add delete user functionality
 - [ ] Map coordinates to cities / regions.
 - [ ] Query API for pollution data every one hour, for every user.
+    - Need to figure out how to access, datasources, prisma, outside resolvers.
 - [ ] Notify user of levels.
+    - [ ] SMS
+    - [ ] Email (mailtrap / sendgrid)
+    - [ ] Whatsapp (try whatsapp's api)

@@ -1,4 +1,5 @@
 import { objectType, extendType, nonNull, floatArg, list } from 'nexus';
+import { NexusGenObjects } from "../../nexus-typegen";
 
 export const Condition = objectType({
   name: "Condition",
@@ -17,7 +18,7 @@ export const ConditionQuery = extendType({
       type: "Condition",
       args: { coord: nonNull(list(nonNull(floatArg()))) },
 
-      resolve(parent, args, context, info) {
+      resolve(_, args, context) {
         return context.dataSources.pollutionAPI.getPollution(args.coord);
       }
     })

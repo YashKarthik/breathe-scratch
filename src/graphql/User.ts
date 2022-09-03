@@ -1,4 +1,5 @@
 import { objectType, extendType, stringArg, intArg, nonNull, list, floatArg } from 'nexus';
+import { NexusGenObjects } from "../../nexus-typegen";
 
 export const User = objectType({
   name: "User",
@@ -33,7 +34,7 @@ export const UserQuery = extendType({
     t.nonNull.field("users", {
       type: nonNull(list(nonNull(SafeUser))),
 
-      async resolve(parent, args, context, info) {
+      async resolve(_, _args, context) {
         const data = await context.prisma.user.findMany({
           select: { name: true },
         });
@@ -58,7 +59,7 @@ export const UserAccount = extendType({
         coord : nonNull(list(nonNull(floatArg())))
       },
 
-      async resolve(parent, args, context) {
+      async resolve(_, args, context) {
         const { email, phone, name, coord } = args;
 
         if (!email && !phone) {
@@ -99,8 +100,8 @@ export const UserAccount = extendType({
         phone: intArg(),
       },
 
-      async resolve(parent, args, context) {
-        const { name, email, phone } = args;
+      async resolve(_, args, context) {
+        const { email, phone } = args;
 
         if (!email && !phone) {
           throw new Error("Both phone and email cannot be null");
@@ -122,6 +123,16 @@ export const UserAccount = extendType({
           });
 
           return user;
+        } else {
+          const user = await context.prisma.user.delete({
+            where: {
+              phone: phone!,
+              email: email!,
+            }
+          });
+
+          return user;
+
         }
       }
     })
