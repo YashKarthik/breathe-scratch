@@ -14,11 +14,17 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 scalar DateTime
 
 type Mutation {
+  delete(email: String, name: String!, phone: Int): User!
   signup(coord: [Float!]!, email: String, name: String!, phone: Int): SignUp!
 }
 
 type Query {
   condition(coord: [Float!]!): Condition!
+  users: [SafeUser!]!
+}
+
+type SafeUser {
+  name: String!
 }
 
 type SignUp {

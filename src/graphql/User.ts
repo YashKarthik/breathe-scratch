@@ -19,7 +19,32 @@ export const SignUp = objectType({
   }
 })
 
-export const UserSignUp = extendType({
+
+export const SafeUser = objectType({
+  name: "SafeUser",
+  definition(t) {
+    t.nonNull.field('name', { type: "String" })
+  }
+})
+
+export const UserQuery = extendType({
+  type: "Query",
+  definition(t) {
+    t.nonNull.field("users", {
+      type: nonNull(list(nonNull(SafeUser))),
+
+      async resolve(parent, args, context, info) {
+        const data = await context.prisma.user.findMany({
+          select: { name: true },
+        });
+        console.log('Data: ', data);
+        return data;
+      }
+    })
+  }
+});
+
+export const UserAccount = extendType({
   type: "Mutation",
   definition(t) {
 
@@ -40,29 +65,20 @@ export const UserSignUp = extendType({
           throw new Error("Both phone and email cannot be null");
         }
 
-//        const user = await context.prisma.user.create({
-//          data: {
-//            email: email,
-//            phone: phone,
-//            name: name,
-//            coord: coord
-//          },
-//        });
+        const user = await context.prisma.user.create({
+          data: {
+            email: email,
+            phone: phone,
+            name: name,
+            coord: coord
+          },
+        });
 
         const condition: Promise<{
           aqi: number;
           coord: number[];
           updatedAt: any;
         }> = await context.dataSources.pollutionAPI.getPollution(coord);
-
-        const user = {
-          id: 9,
-          email: 'etsat',
-          phone: 8908009,
-          name: 'setas',
-          coord: [50, 50]
-
-        }
 
         console.log('Condition from User.ts', condition);
         console.log('User prisma stuff from User.ts', user);
@@ -74,6 +90,41 @@ export const UserSignUp = extendType({
 
       },
     });
+
+    t.nonNull.field("delete", {
+      type: "User",
+      args: {
+        name: nonNull(stringArg()),
+        email: stringArg(),
+        phone: intArg(),
+      },
+
+      async resolve(parent, args, context) {
+        const { name, email, phone } = args;
+
+        if (!email && !phone) {
+          throw new Error("Both phone and email cannot be null");
+        } else if (email) {
+          const user = await context.prisma.user.delete({
+            where: {
+              email: email,
+            }
+
+          });
+
+          return user;
+
+        } else if (phone) {
+          const user = await context.prisma.user.delete({
+            where: {
+              phone: phone,
+            }
+          });
+
+          return user;
+        }
+      }
+    })
 
   },
 

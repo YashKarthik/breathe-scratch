@@ -51,6 +51,9 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  SafeUser: { // root type
+    name: string; // String!
+  }
   SignUp: { // root type
     condition: NexusGenRootTypes['Condition']; // Condition!
     user: NexusGenRootTypes['User']; // User!
@@ -81,10 +84,15 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Mutation: { // field return type
+    delete: NexusGenRootTypes['User']; // User!
     signup: NexusGenRootTypes['SignUp']; // SignUp!
   }
   Query: { // field return type
     condition: NexusGenRootTypes['Condition']; // Condition!
+    users: NexusGenRootTypes['SafeUser'][]; // [SafeUser!]!
+  }
+  SafeUser: { // field return type
+    name: string; // String!
   }
   SignUp: { // field return type
     condition: NexusGenRootTypes['Condition']; // Condition!
@@ -106,10 +114,15 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   Mutation: { // field return type name
+    delete: 'User'
     signup: 'SignUp'
   }
   Query: { // field return type name
     condition: 'Condition'
+    users: 'SafeUser'
+  }
+  SafeUser: { // field return type name
+    name: 'String'
   }
   SignUp: { // field return type name
     condition: 'Condition'
@@ -126,6 +139,11 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    delete: { // args
+      email?: string | null; // String
+      name: string; // String!
+      phone?: number | null; // Int
+    }
     signup: { // args
       coord: number[]; // [Float!]!
       email?: string | null; // String
